@@ -199,6 +199,9 @@ _LocSetItemKey: TypeAlias = (
     | MaskType
     | Hashable
     | _IndexSliceTuple
+    # ty only treats a tuple as Hashable when all its members are, so a
+    # (row, column) key such as df.loc[:, iter(cols)] no longer matches the
+    # Hashable member above; spell out the tuple, with an iterable column.
     | tuple[
         IndexOpsMixin | MaskType | Scalar | Sequence[Scalar] | slice,
         Hashable | Iterable[Hashable],
